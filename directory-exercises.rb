@@ -30,7 +30,7 @@ def input_students
       puts "Please enter a valid month."
       cohort_temp = gets.chomp.capitalize
     end
-    cohort_temp = cohort
+    cohort = cohort_temp
   end
   # return the array of students
   students
@@ -43,12 +43,22 @@ def print_header
 end
 
 def print(students)
-  count = 0
-  number = students.length
-  until count == number
-    puts students[count][:name]
-    count += 1
+  cohort_hash = {}
+
+  students.each do |student|
+    cohort = student[:cohort]
+
+    if cohort_hash[cohort] == nil
+      cohort_hash[cohort] = []
+    end
+
+    cohort_hash[cohort].push(student[:name])
   end
+
+    cohort_hash.each do |key, value|
+      puts key
+      puts "- #{value.join("\n- ")}"
+    end
 end
 
 def print_footer(students)
