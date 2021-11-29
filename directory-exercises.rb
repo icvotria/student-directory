@@ -1,12 +1,19 @@
 def input_students
-  puts "Please enter the names of the students."
+  
+  puts "Please enter a student."
   puts "To finish, just hit return twice."
   # create an empty array
   students = []
   # get the first name
   name = gets.chomp.gsub(/[A-Za-z']+/,&:capitalize)
   puts "What cohort is #{name} in?"
-  cohort = gets.chomp.capitalize
+  cohort_temp = gets.chomp.capitalize
+  require 'date'
+  until Date::MONTHNAMES.include? cohort_temp
+    puts "Please enter a valid month."
+    cohort_temp = gets.chomp.capitalize
+  end
+  cohort = cohort_temp
   # while name is not empty, repeat this code
   while !name.empty? do 
     # add the student hash to the array
@@ -17,7 +24,13 @@ def input_students
     name = gets.chomp.gsub(/[A-Za-z']+/,&:capitalize)
     break if name.empty?
     puts "What cohort is #{name} in?"
-    cohort = gets.chomp.capitalize
+    cohort_temp = gets.chomp.capitalize
+    require 'date'
+    until Date::MONTHNAMES.include? cohort_temp
+      puts "Please enter a valid month."
+      cohort_temp = gets.chomp.capitalize
+    end
+    cohort_temp = cohort
   end
   # return the array of students
   students
@@ -48,9 +61,11 @@ def first_letter(students)
   puts "What letter would you like to look up?"
   letter = gets.chomp.upcase
   letter_array = []
+  
   students.each do |student|
     student[:name].chars[0] == letter ? letter_array.push(student[:name]) : next
   end
+  
   if letter_array.empty?
     puts "There are no students whose name starts with #{letter}."
   elsif letter_array.size == 1
@@ -78,6 +93,7 @@ def details_input(students)
     student[:hobby] = hobby
   end
   puts "-------------".center(100)
+  
   students.each do |student|
     puts "What is #{student[:name]}'s favourite film?"
     fav_film = gets.chomp.gsub(/[A-Za-z']+/,&:capitalize)
@@ -89,6 +105,7 @@ def details_getter(students)
   puts "-------------".center(100)
   puts "What would you like to learn about the students, their hobbies or their favourite films?"
   answer = gets.chomp
+  
   case answer
   when "hobbies"
     students.each do |student|
