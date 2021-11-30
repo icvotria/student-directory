@@ -1,44 +1,58 @@
+@students = []
+
 def input_students
   puts "Please enter the names of the students."
   puts "To finish, just hit return twice."
-  # create an empty array
-  students = []
   # get the first name
-  name = gets.chomp
+  name = gets.chomp.gsub(/[A-Za-z']+/,&:capitalize)
   # while name is not empty, repeat this code
   while !name.empty? do 
     # add the student hash to the array
-    students << {name: name, cohort: :november}
-    if students.count == 1
-      puts "Now we have #{students.count} student."
+    @students << {name: name, cohort: :november}
+    if @students.count == 1
+      puts "Now we have #{@students.count} student."
     else 
-      puts "Now we have #{students.count} students."
+      puts "Now we have #{@students.count} students."
     end
     # get another name from the user
-    name = gets.chomp
+    name = gets.chomp.gsub(/[A-Za-z']+/,&:capitalize)
   end
-  # return the array of students
-  students
+  @students
 end
-  
+
+def interactive_menu
+  loop do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+    selection = gets.chomp
+    case selection
+    when "1"
+      input_students
+    when "2"
+      print_header
+      print
+      print_footer
+    when "9"
+      exit
+    end
+  end  
+end
   
 def print_header
   puts "The students of Villains Academy"
   puts "-------------"
 end
 
-def print(students)
-  students.each_with_index do |student, index|
-    puts "#{index + 1}. #{student[:name].capitalize} (#{student[:cohort].capitalize} cohort)"
+def print
+  @students.each.with_index do |student, index|
+   puts "#{index + 1}. #{student[:name]} (#{student[:cohort].capitalize} cohort)"
   end
 end
 
-def print_footer(students)
+def print_footer
   puts "-------------"
-  puts "Overall, we have #{students.count} great students."
+  puts "Overall, we have #{@students.count} great students."
 end
 
-students = input_students
-print_header
-print(students)
-print_footer(students)
+interactive_menu
