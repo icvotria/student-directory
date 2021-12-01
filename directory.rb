@@ -17,7 +17,6 @@ def input_students
     # get another name from the user
     name = gets.chomp.gsub(/[A-Za-z']+/,&:capitalize)
   end
-  @students
 end
 
 def interactive_menu
@@ -35,6 +34,8 @@ def interactive_menu
       print_footer
     when "9"
       exit
+    else
+      puts "I don't know what '#{selection}' means, please try again"
     end
   end  
 end
